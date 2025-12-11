@@ -16,6 +16,7 @@ class IEnvironment{
         
         virtual bool get_next_state(const ACTION& act, STATE& next_state, REWARD& reward) = 0;
         STATE get_initial_state() const { return initial_state; }
+        void set_current_state(const STATE& state){ current_state = state; }
 
         STATE* states;
         size_t states_count;

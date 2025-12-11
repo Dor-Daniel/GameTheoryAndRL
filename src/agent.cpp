@@ -24,7 +24,7 @@ class Agent{
         std::uniform_real_distribution<double> real_dist;
         std::uniform_int_distribution<int> int_dist;
 
-        std::unordered_map <int, std::vector<double> > Q_table;
+        double** Q;
         STATE* states;
         ACTION* actions;
         size_t actions_count = 0, states_count = 0;
@@ -38,8 +38,8 @@ class Agent{
                 return actions[idx];
             }else{
                 size_t state_idx = state_index(state);
-                std::vector<double> it = Q_table[state_idx];
-                size_t action_idx = find_max_probability_index(it);
+                double* p = Q[state_idx];
+                size_t action_idx = find_max_probability_index(p);
                 return actions[action_idx];
             }
         }
@@ -62,26 +62,25 @@ class Agent{
             return idx;
         }
 
-        size_t find_max_probability_index(const std::vector<double>& arr){
-            size_t idx = 0, iter = 0;
+        size_t find_max_probability_index(const double* arr){
+            size_t idx = 0;
             double max_prob = 0.0;
 
-            for(const double& p : arr){
-                if(p >= max_prob){
-                    max_prob = p;
-                    idx = iter;
+            for(size_t i = 0; i < actions_count; i++){
+                if(arr[i] >= max_prob){
+                    max_prob = arr[i];
+                    idx = i;
                 }
-                iter++;
             }
             return idx;
         }
 
-        double find_max_probability(const std::vector<double>& arr){
+        double find_max_probability(const double* arr){
             double max_prob = 0.0;
 
-            for(const double& p : arr){
-                if(p >= max_prob){
-                    max_prob = p;
+            for(size_t i = 0; i < actions_count; i++){
+                if(arr[i] >= max_prob){
+                    max_prob = arr[i];
                 }
             }
             return max_prob;
@@ -93,16 +92,22 @@ class Agent{
         : mt(rd()), real_dist(0.0, 1.0), int_dist(0, (int)_actions_count),
         states(_states), actions(_actions), actions_count(_actions_count), states_count(_states_count)
         {
-            // Q_table.reserve(_states_count);
-            for(size_t i = 0; i < _states_count; i++){
-                std::vector<double> v;
-                v.reserve(_actions_count);
-                for(double& x : v){
-                    x = 0.0;
+            Q = (double**)malloc(states_count * sizeof(double*));
+            for(size_t i = 0; i < states_count; i++){
+                Q[i] = (double*)malloc(actions_count * sizeof(double));
+                for(size_t j = 0; j < actions_count; j++){
+                    Q[i][j] = 0.0;
                 }
-                Q_table[i] = std::move(v);
             }
 
+
+        }
+
+        ~Agent(){
+            for(size_t i = 0; i < states_count; i++){
+                free(Q[i]);
+            }
+            free(Q);            
         }
 
         void prepare_for_training(IEnvironment<ACTION, STATE>* env){
@@ -132,12 +137,11 @@ class Agent{
             }
 
             size_t next_state_idx = state_index(next_state);
-            std::vector<double>& glida = Q_table[curr_state_idx];
             size_t act_idx = action_index(act);
-            double old_value = glida[act_idx];
-            double next_max = (!done) ? find_max_probability(Q_table[next_state_idx]) : 0.0;
+            double old_value = Q[curr_state_idx][act_idx];
+            double next_max = (!done) ? find_max_probability(Q[next_state_idx]) : 0.0;
 
-            Q_table[curr_state_idx][action_index(act)] = 
+            Q[curr_state_idx][action_index(act)] = 
                     old_value + alpha * (reward + gamma * next_max - old_value);
 
             current_state = next_state;
@@ -149,6 +153,7 @@ class Agent{
             done = false;
             total_rewards = 0;
             current_state = env->get_initial_state();
+            env->set_current_state(current_state);
         }
 
         void finish_episode(const size_t& i, const REWARD& total_rewards){
