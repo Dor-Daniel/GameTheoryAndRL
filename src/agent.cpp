@@ -152,7 +152,7 @@ class Agent{
         }
 
         void finish_episode(const size_t& i, const REWARD& total_rewards){
-            epsilon = std::max(0.01, epsilon * 0.95);
+            epsilon = std::max(0.01, epsilon * 0.995);
             rewards_all_episodes[i] = total_rewards;
         }
 

@@ -47,7 +47,7 @@ namespace maze{
 
     // returns true if not done
     bool MazeEnv::get_next_state(const ACTION& act, STATE& next_state, REWARD& reward){
-        next_state = *(current_state + ACT(act));
+        next_state = (current_state + ACT(act));
         current_state = next_state;
         reward = get_reward(next_state);
         return reward == step_reward;

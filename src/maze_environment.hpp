@@ -14,11 +14,8 @@ namespace maze{
 
         void operator=(const point& other){ x = other.x; y = other.y; }
         const bool operator==(const point& other) const { return x == other.x && y == other.y; }
-        const std::unique_ptr<point> operator+(const point& other) { 
-            std::unique_ptr<point> p = std::make_unique<point>();
-            p->x = x + other.x;
-            p->y = y + other.y; 
-            return p;
+        const point operator+(const point& other) { 
+            return point{x + other.x, y + other.y};
         }
     };
     //template<typename STATE, typename ACTION> class IEnvironment;

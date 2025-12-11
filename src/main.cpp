@@ -67,7 +67,6 @@ int main(void){
         if(!finished_training){
             
             t += GetFrameTime() * speed;
-            std::cout<<GetFrameTime()<<std::endl;
             
             if(t > treshold){
                 t = 0.0f;
