@@ -5,8 +5,6 @@
 #include <algorithm>
 #include "IEnvironment.hpp"
 
-
-
 template <typename ACTION, typename STATE, typename REWARD>
 class Agent{
     

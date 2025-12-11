@@ -18,7 +18,6 @@ namespace maze{
             return point{x + other.x, y + other.y};
         }
     };
-    //template<typename STATE, typename ACTION> class IEnvironment;
 
     enum action{
         LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3
