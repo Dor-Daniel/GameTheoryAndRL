@@ -19,7 +19,7 @@ void DrawMaze(maze::MazeEnv& env, Agent<maze::ACTION, maze::STATE, REWARD>& oo7)
     env.get_dimention(n, m);
 
     // colors for walls and empty cells
-    Color wall = {.r = 20 , .g = 20, .b = 20, .a = 255}, empty_cell = {.r = 233, .g = 168, .b = 255, .a = 255};
+    Color wall = {.r = 20 , .g = 20, .b = 20, .a = 255}, empty_cell = {.r = 120, .g = 60, .b = 20, .a = 255};
     
     for(int i = 0; i < n; i++){ // rows
         for(int j = 0; j < m; j++){ // columns
@@ -36,7 +36,7 @@ void DrawMaze(maze::MazeEnv& env, Agent<maze::ACTION, maze::STATE, REWARD>& oo7)
     float b = (float)oo7.get_current_state().y;
     a = x + (a + 0.5f) * size_of_block;
     b = y + (b + 0.5f) * size_of_block;
-    DrawCircle(a, b, size_of_block / 2.0f, (Color){.r = 255, .g = 0, .b = 225, . a = 255});
+    DrawCircle(a, b, size_of_block / 2.0f, (Color){.r = 255, .g = 255, .b = 225, . a = 255});
 }
 
 int main(void){
@@ -54,7 +54,7 @@ int main(void){
     // parameters to control the speed of the agent simulation
     // make treshold negative in order to dismiis them
     // NOTE: if u want it as fast as it can be, comment the SetTargetFps and make treshold negative
-    float speed = 100.0f;
+    float speed = 1000.0f;
     float t = 0.0f;
     float treshold = 10.0f;
     
@@ -106,7 +106,7 @@ int main(void){
                 DrawMaze(env, oo7);
                 DrawText(std::to_string(current_episode).c_str(), 10, 10, 20, BLACK);
                 if(env.is_goal_reached()){
-                    DrawText("Win", WIDTH / 2, HEIGHT / 2, 250,BLACK);
+                    DrawText("Win", WIDTH / 2, HEIGHT / 2, 250,RED);
                 }
                 std::string str1 = "Current action is ";
                 maze::ACTION act = oo7.get_current_action();

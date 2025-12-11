@@ -12,8 +12,8 @@ class Agent{
         uint16_t num_episodes = 5000;
         double alpha = 0.1;
         double gamma = 0.9;
-        double epsilon = 0.9;
-        double initial_epsilon = 0.5;
+        double epsilon = 0.2;
+        double initial_epsilon = 0.2;
 
         std::vector<REWARD> rewards_all_episodes;
 
@@ -137,7 +137,7 @@ class Agent{
             double next_max = (!done) ? find_max_probability(Q[next_state_idx]) : 0.0;
 
             Q[curr_state_idx][act_idx] = 
-                    old_value + alpha * (reward + gamma * next_max - old_value);
+                    (1 - alpha) * old_value + alpha * (reward + gamma * next_max - old_value);
 
             current_state = next_state;
             
