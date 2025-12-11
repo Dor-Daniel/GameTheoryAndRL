@@ -54,7 +54,7 @@ int main(void){
     // parameters to control the speed of the agent simulation
     // make treshold negative in order to dismiis them
     // NOTE: if u want it as fast as it can be, comment the SetTargetFps and make treshold negative
-    float speed = 10.0f;
+    float speed = 100.0f;
     float t = 0.0f;
     float treshold = 10.0f;
     
@@ -89,7 +89,7 @@ int main(void){
                 }else{
                     // between episodes
                     current_episode++;
-                    if(current_episode < oo7.get_num_episodes()){
+                    if(current_episode < oo7.get_num_episodes() && !env.is_goal_reached()){
                         oo7.finish_episode(current_episode, total_reward);
                         oo7.prepare_for_next_episode(done, total_reward, &env);
                         done = false;
@@ -117,6 +117,8 @@ int main(void){
                 DrawText(str3.c_str(), 150, 50, 20, WHITE);
                 
         EndDrawing();
+
+
 
     }
     

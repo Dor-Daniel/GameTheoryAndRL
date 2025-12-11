@@ -63,7 +63,7 @@ class Agent{
 
         size_t find_max_probability_index(const double* arr){
             size_t idx = 0;
-            double max_prob = 0.0;
+            double max_prob = arr[0];
 
             for(size_t i = 0; i < actions_count; i++){
                 if(arr[i] >= max_prob){
@@ -75,7 +75,7 @@ class Agent{
         }
 
         double find_max_probability(const double* arr){
-            double max_prob = 0.0;
+            double max_prob = arr[0];
 
             for(size_t i = 0; i < actions_count; i++){
                 if(arr[i] >= max_prob){
@@ -137,7 +137,7 @@ class Agent{
             double next_max = (!done) ? find_max_probability(Q[next_state_idx]) : 0.0;
 
             Q[curr_state_idx][act_idx] = 
-                    (1 - alpha) * old_value + alpha * (reward + gamma * next_max - old_value);
+                    old_value + alpha * (reward + gamma * next_max - old_value);
 
             current_state = next_state;
             
