@@ -12,8 +12,8 @@ class Agent{
         uint16_t num_episodes = 5000;
         double alpha = 0.1;
         double gamma = 0.9;
-        double epsilon = 0.9;
-        double initial_epsilon = 0.5;
+        double epsilon = 0.2;
+        double initial_epsilon = 0.2;
 
         std::vector<REWARD> rewards_all_episodes;
 
