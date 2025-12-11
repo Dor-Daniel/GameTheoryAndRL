@@ -52,5 +52,9 @@ namespace maze{
         reward = get_reward(next_state);
         return reward == step_reward;
     }
+
+    bool MazeEnv::is_goal_reached(){
+        return current_state == goal;
+    }
     
 }

@@ -72,6 +72,8 @@ namespace maze{
 
             void get_dimention(int& n, int& m){ n = N; m = M; }
 
+            bool is_goal_reached();
+
     };
 
 }

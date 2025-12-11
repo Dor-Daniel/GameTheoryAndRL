@@ -104,7 +104,10 @@ int main(void){
             ClearBackground(BACKGROUND_COLOR);
             DrawMaze(env, oo7);
             DrawText(std::to_string(current_episode).c_str(), 10, 10, 20, BLACK);
-        EndDrawing();
+            if(env.is_goal_reached()){
+                DrawText("Win", WIDTH / 2, HEIGHT / 2, 250,BLACK);
+            }
+            EndDrawing();
 
     }
     
