@@ -13,7 +13,7 @@ class Agent{
         double alpha = 0.1;
         double gamma = 0.9;
         double epsilon = 0.9;
-        double initial_epsilon = 0.9;
+        double initial_epsilon = 0.5;
 
         std::vector<REWARD> rewards_all_episodes;
 
@@ -28,6 +28,7 @@ class Agent{
         size_t actions_count = 0, states_count = 0;
 
         STATE current_state;
+        ACTION current_action;
 
         ACTION pick_action(const STATE& state){
             if(real_dist(mt) < epsilon){
@@ -110,7 +111,7 @@ class Agent{
 
         void prepare_for_training(IEnvironment<ACTION, STATE>* env){
             current_state = env->get_initial_state();
-
+            current_action = {};
             rewards_all_episodes.clear();
 
             if(rewards_all_episodes.capacity() < num_episodes){
@@ -122,25 +123,21 @@ class Agent{
 
         void act_once(bool& done, REWARD& total_rewards, IEnvironment<ACTION, STATE>* env){
 
-            const ACTION& act = pick_action(current_state);
+            current_action = pick_action(current_state);
             size_t curr_state_idx = state_index(current_state);
 
             STATE next_state;
             REWARD reward;
 
-            if(!env->get_next_state(act, next_state, reward)){
-                done = true;
-                total_rewards += reward;
-                return;
-            }
+            done = !env->get_next_state(current_action, next_state, reward);
 
             size_t next_state_idx = state_index(next_state);
-            size_t act_idx = action_index(act);
+            size_t act_idx = action_index(current_action);
             double old_value = Q[curr_state_idx][act_idx];
             double next_max = (!done) ? find_max_probability(Q[next_state_idx]) : 0.0;
 
-            Q[curr_state_idx][action_index(act)] = 
-                    old_value + alpha * (reward + gamma * next_max - old_value);
+            Q[curr_state_idx][act_idx] = 
+                    (1 - alpha) * old_value + alpha * (reward + gamma * next_max - old_value);
 
             current_state = next_state;
             
@@ -183,5 +180,7 @@ class Agent{
         size_t get_num_episodes() { return num_episodes; }
 
         STATE get_current_state(){ return current_state; }
+
+        ACTION get_current_action(){ return current_action; }
 
 };

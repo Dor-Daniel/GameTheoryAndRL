@@ -2,11 +2,18 @@
 
 namespace maze{
 
-    point ACT(action a) { 
-        return point{
-                -1 + 2 * (a - 2) ? a > 1 : 0,
-                -1 + 2 * a ? a < 2 : 0
-            }; 
+    point ACT(action a) {
+        switch (a){
+            case LEFT:
+                return point{0, -1};
+            case RIGHT:
+                return point{0, 1};
+            case UP: 
+                return point{-1, 0};
+            case DOWN:
+                return point{1, 0};
+            return point{0, 0};
+        };
     }
 
     bool MazeEnv::is_state_valid(const STATE& s){

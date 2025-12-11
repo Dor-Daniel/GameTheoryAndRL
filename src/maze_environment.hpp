@@ -32,7 +32,7 @@ namespace maze{
     const static STATE init = STATE{0, 0};
     const STATE goal = STATE{9, 9};
 
-    const REWARD goal_reward = 500, hit_reward = -100, step_reward = 0;
+    const REWARD goal_reward = 50, hit_reward = -10, step_reward = -1;
 
 
     static const std::vector<int> maze{

@@ -3,6 +3,7 @@
 #include "IEnvironment.hpp"
 #include "maze_environment.hpp"
 #include "agent.cpp"
+#include <string>
 #include <raylib.h>
 
 
@@ -55,7 +56,7 @@ int main(void){
     // NOTE: if u want it as fast as it can be, comment the SetTargetFps and make treshold negative
     float speed = 10.0f;
     float t = 0.0f;
-    float treshold = 1.0f;
+    float treshold = 10.0f;
     
     // init the window
     InitWindow(WIDTH, HEIGHT, "RL maze");
@@ -102,12 +103,20 @@ int main(void){
         // draw section
         BeginDrawing();
             ClearBackground(BACKGROUND_COLOR);
-            DrawMaze(env, oo7);
-            DrawText(std::to_string(current_episode).c_str(), 10, 10, 20, BLACK);
-            if(env.is_goal_reached()){
-                DrawText("Win", WIDTH / 2, HEIGHT / 2, 250,BLACK);
-            }
-            EndDrawing();
+                DrawMaze(env, oo7);
+                DrawText(std::to_string(current_episode).c_str(), 10, 10, 20, BLACK);
+                if(env.is_goal_reached()){
+                    DrawText("Win", WIDTH / 2, HEIGHT / 2, 250,BLACK);
+                }
+                std::string str1 = "Current action is ";
+                maze::ACTION act = oo7.get_current_action();
+                std::string str2 = (act == maze::UP) ? "UP" :
+                            (act == maze::DOWN) ? "DOWN" :
+                            (act == maze::LEFT) ? "LEFT" : "RIGHT";
+                std::string str3 = (str1 + str2);
+                DrawText(str3.c_str(), 150, 50, 20, WHITE);
+                
+        EndDrawing();
 
     }
     
