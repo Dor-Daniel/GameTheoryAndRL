@@ -56,11 +56,11 @@ int main(void){
     // NOTE: if u want it as fast as it can be, comment the SetTargetFps and make treshold negative
     float speed = 100.0f;
     float t = 0.0f;
-    float treshold = 10.0f;
+    float treshold = -1.0f;
     
     // init the window
     InitWindow(WIDTH, HEIGHT, "RL maze");
-    SetTargetFPS(60);
+    // SetTargetFPS(60);
 
     // prepare for training
     oo7.prepare_for_training(&env);

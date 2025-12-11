@@ -137,7 +137,7 @@ class Agent{
             double next_max = (!done) ? find_max_probability(Q[next_state_idx]) : 0.0;
 
             Q[curr_state_idx][act_idx] = 
-                    old_value + alpha * (reward + gamma * next_max - old_value);
+                    (1-alpha)*old_value + alpha * (reward + gamma * next_max - old_value);
 
             current_state = next_state;
             
